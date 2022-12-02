@@ -7,7 +7,17 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <FluentTheme Mode="Dark"/>
         <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml"/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <StyleInclude Source="/Styles/ButtonStyles.axaml"></StyleInclude>
     </Application.Styles>
+    
+    <Application.Resources>
+        <SolidColorBrush x:Key="FaintBlueBrush">#7289D9</SolidColorBrush>
+        <SolidColorBrush x:Key="LightGreyBlueBrush">#B7B9BD</SolidColorBrush>
+        <SolidColorBrush x:Key="GreyBlueBrush">#35383E</SolidColorBrush>
+        <SolidColorBrush x:Key="MidGreyBlueBrush">#2F3137</SolidColorBrush>
+        <SolidColorBrush x:Key="DarkGreyBlueBrush">#202226</SolidColorBrush>
+    </Application.Resources>
 </Application>

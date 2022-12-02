@@ -1,0 +1,25 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Squarl.Views.AlbumView">
+    <ListBox Items="{Binding SearchResults}" SelectedItem="{Binding SelectedProject}" Background="Transparent" Margin="0 20">
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel Width="200">
+                    <Border CornerRadius="10" ClipToBounds="True">
+                        <Panel Background="Transparent">
+                            <Image Width="200" Stretch="Uniform" Source="/Assets/Images/ghost.png" />
+                            <Panel Height="200" IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNull}}">
+                            </Panel>
+                        </Panel>
+                    </Border>
+                    <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Artist}" HorizontalAlignment="Center" />
+                </WrapPanel>
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+    </ListBox>
+    
+</UserControl>

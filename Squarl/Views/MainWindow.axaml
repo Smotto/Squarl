@@ -3,57 +3,101 @@
         xmlns:vm="using:Squarl.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        mc:Ignorable="d" d:DesignWidth="1048" d:DesignHeight="645"
         x:Class="Squarl.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Squarl">
+        Title="Squarl"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True">
 
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
+    
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.85" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
 
-    <!-- Main Window Grid -->
-    <Grid RowDefinitions="Auto, Auto, Auto">
-        <!-- Top Bar Grid -->
-        <Grid Grid.Row="0" RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, Auto, Auto, Auto" Margin="4">
-            <!-- Top Bar -->
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                <Button>
-                    <Label Content="File" />
+        <!-- Main Window Grid -->
+        <Grid RowDefinitions="*, *" 
+              ColumnDefinitions="*, *"
+              Margin="30,30,30,5"
+              ShowGridLines="False"
+              >
+            <!-- Main Window Grid Themes -->
+            <Grid.Styles>
+                <!-- Scan Results Theme -->
+                <Style Selector="TreeDataGrid">
+                    <Setter Property="CornerRadius" Value="5"></Setter>
+                    <Setter Property="Background" Value="{DynamicResource MidGreyBlueBrush}"></Setter>
+                </Style>
+            </Grid.Styles>
+
+            <!-- Top Menu Icons -->
+            <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                <Button Command="{Binding OpenFolderCommand}">
+                    <Image Source="/Assets/Images/folder.png"></Image>
                 </Button>
                 <Button>
-                    <Label Content="Edit" />
+                    <Image Source="/Assets/Images/save.png"></Image>
                 </Button>
                 <Button>
-                    <Label Content="Layout" />
+                    <Image Source="/Assets/Images/edit.png"></Image>
+                </Button>
+                <Button>
+                    <Image Source="/Assets/Images/layout.png"></Image>
                 </Button>
                 <Button>
                     <Label Content="Windows" />
                 </Button>
                 <Button>
-                    <Label Content="Scans" />
-                </Button>
-                <Button>
-                    <Label Content="Debugger" />
-                </Button>
-            </StackPanel>
-            
-            <!-- Below Top Bar -->
-            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-                <Button>
-                    <Label Content="Attach to Process" />
-                </Button>
-                <Button>
-                    <Label Content="Folder" />
-                </Button>
-                <Button>
-                    <Label Content="Save" />
+                    <Image Source="/Assets/Images/attach.png"></Image>
                 </Button>
                 <Button>
                     <Label Content="Current Process" />
                 </Button>
+                <Button>
+                    <Image Source="/Assets/Images/scan.png"></Image>
+                </Button>
+                <Button>
+                    <Image Source="/Assets/Images/debugger.png"></Image>
+                </Button>
             </StackPanel>
-            <TreeDataGrid Grid.Row="2" Grid.Column="0" Source="{Binding Source}"/>
+            
+            <Panel Grid.Row="0" Grid.Column="0">
+                
+                
+            </Panel>
+
+            <!-- Scan Results-->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,50,20,0">
+                <Label FontSize="20" Content="Scan Results"></Label>
+                <TreeDataGrid Source="{Binding Source}" />
+            </StackPanel>
+
+            <!-- Manual Scanner Results-->
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,50,0,0">
+                <Label FontSize="20" Content="Scanner"></Label>
+                <TextBox Watermark="Enter data to scan" />
+                <ListBox Items="{Binding MyItems}" SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="Red" CornerRadius="4" Padding="4">
+                                <TextBlock Text="{Binding}" />
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
         </Grid>
-    </Grid>
+    </Panel>
 </Window>

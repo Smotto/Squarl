@@ -1,6 +1,5 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
              xmlns:local="using:Squarl"
              x:Class="Squarl.App">
     <Application.DataTemplates>
@@ -8,6 +7,7 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="LightBlue" SecondaryColor="Amber" />
+        <FluentTheme Mode="Light"/>
+        <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml"/>
     </Application.Styles>
 </Application>

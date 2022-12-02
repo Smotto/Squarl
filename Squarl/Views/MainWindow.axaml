@@ -3,8 +3,6 @@
         xmlns:vm="using:Squarl.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:styles="clr-namespace:Material.Styles;assembly=Material.Styles"
-        xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
         x:Class="Squarl.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -39,8 +37,7 @@
                     <Label Content="Debugger" />
                 </Button>
             </StackPanel>
-
-
+            
             <!-- Below Top Bar -->
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
                 <Button>
@@ -56,6 +53,7 @@
                     <Label Content="Current Process" />
                 </Button>
             </StackPanel>
+            <TreeDataGrid Grid.Row="2" Grid.Column="0" Source="{Binding Source}"/>
         </Grid>
     </Grid>
 </Window>

@@ -14,7 +14,7 @@
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    
+
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
@@ -27,11 +27,10 @@
         </ExperimentalAcrylicBorder>
 
         <!-- Main Window Grid -->
-        <Grid RowDefinitions="*, *" 
+        <Grid RowDefinitions="*"
               ColumnDefinitions="*, *"
-              Margin="30,30,30,5"
-              ShowGridLines="False"
-              >
+              Margin="30,30,30,15"
+              ShowGridLines="False">
             <!-- Main Window Grid Themes -->
             <Grid.Styles>
                 <!-- Scan Results Theme -->
@@ -41,95 +40,128 @@
                 </Style>
             </Grid.Styles>
 
-            <!-- Top Menu Icons -->
-            <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                <Button Command="{Binding OpenFolderCommand}">
-                    <Image Source="/Assets/Images/folder.png"></Image>
-                </Button>
-                <Button>
-                    <Image Source="/Assets/Images/save.png"></Image>
-                </Button>
-                <Button>
-                    <Image Source="/Assets/Images/edit.png"></Image>
-                </Button>
-                <Button>
-                    <Image Source="/Assets/Images/layout.png"></Image>
-                </Button>
-                <Button>
-                    <Label Content="Windows" />
-                </Button>
-                <Button>
-                    <Image Source="/Assets/Images/attach.png"></Image>
-                </Button>
-                <Button>
-                    <Label Content="Current Process" />
-                </Button>
-                <Button>
-                    <Image Source="/Assets/Images/scan.png"></Image>
-                </Button>
-                <Button>
-                    <Image Source="/Assets/Images/debugger.png"></Image>
-                </Button>
-            </StackPanel>
-            
-            <!-- Scan Results -->
-            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,50,20,0">
-                <Label FontSize="12" Content="Scan Results"></Label>
-                <Panel Height="300">
-                    <TreeDataGrid Source="{Binding Source}" />
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+                <!-- Top Menu Icons -->
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                    <Border ToolTip.Tip="Projects">
+                        <Button Command="{Binding OpenFolderCommand}">
+                            <Image Source="/Assets/Images/folder.png"></Image>
+                        </Button>
+                    </Border>
+                    
+                    <Border ToolTip.Tip="Save">
+                        <Button>
+                            <Image Source="/Assets/Images/save.png"></Image>
+                        </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Edit">
+                        <Button>
+                            <Image Source="/Assets/Images/edit.png"></Image>
+                        </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Layout">
+                        <Button>
+                            <Image Source="/Assets/Images/layout.png"></Image>
+                        </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Windows">
+                        <Button>
+                            <Label Content="Windows" />
+                        </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Attach To Process">
+                        <Button>
+                            <Image Source="/Assets/Images/attach.png"></Image>
+                        </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Current Attached Process">
+                        <Button>
+                            <Label Content="Current Process" />
+                        </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Scans">
+                        <Button>
+                            <Label Content="Scans" />
+                        </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Debugger">
+                        <Button>
+                            <Image Source="/Assets/Images/debugger.png"></Image>
+                        </Button>
+                    </Border>
+                </StackPanel>
+
+                <!-- Scan Results -->
+                <StackPanel>
+                    <Label FontSize="12" Content="Scan Results"></Label>
+                    <Panel Height="200">
+                        <TreeDataGrid Source="{Binding Source}" />
+                    </Panel>
+                </StackPanel>
+
+                <!-- Output Panel -->
+                <Panel Margin="0,16,0,0">
+                    <Border CornerRadius="4" Background="{DynamicResource NiceBlueBrush}">
+                        <Viewbox Height="300"></Viewbox>
+                    </Border>
                 </Panel>
             </StackPanel>
             
-
-            
             <!-- Scan Options -->
-            <TabControl Grid.Row="0" Grid.Column="1" Margin="20,50,0,0">
-                <TabItem Header="Manual Scan" 
-                         FontSize="12"
-                         MinHeight="0"
-                         Height="25"
-                         Margin="0,0,0,0"
-                         Padding="10, 0"
-                >
-                    <!-- Manual Scanner -->
-                    <StackPanel >
-                        <TextBox Watermark="Enter data to scan" />
-                        <ListBox Items="{Binding MyItems}" SelectionMode="Single">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="Red" CornerRadius="4" Padding="4">
-                                        <TextBlock Text="{Binding}" />
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="Pointer Scan" 
-                         FontSize="12" 
-                         MinHeight="0"
-                         Height="25"
-                         Margin="0,0,0,0"
-                         Padding="10, 0"
-                >
+            <StackPanel Grid.Column="1" Margin="20,50,0,0">
+                <!-- Manual Scanner -->
+                <TabControl >
+                    <TabItem Header="Manual Scan"
+                             FontSize="12"
+                             MinHeight="0"
+                             Height="25"
+                             Margin="0,0,0,0"
+                             Padding="10, 0">
+                        <StackPanel>
+                            
+                            <Border ToolTip.Tip="Start Scan">
+                                <Button>
+                                    <Image Source="/Assets/Images/scan.png"></Image>
+                                </Button>
+                            </Border>
+                            
+                            <!-- Enter Data for Scanner-->
+                            <TextBox Watermark="Enter data to scan" />
+                            <ListBox Items="{Binding MyItems}" SelectionMode="Single">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="Red" CornerRadius="4" Padding="4">
+                                            <TextBlock Text="{Binding}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </TabItem>
+                    
                     <!-- Pointer Scanner -->
-                    <StackPanel >
-                        <TextBox Watermark="Enter data to scan" />
-                        <ListBox Items="{Binding MyItems}" SelectionMode="Single">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="Red" CornerRadius="4" Padding="4">
-                                        <TextBlock Text="{Binding}" />
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </TabItem>
-            </TabControl>
-            
-            
-
+                    <TabItem Header="Pointer Scan"
+                             FontSize="12"
+                             MinHeight="0"
+                             Height="25"
+                             Margin="0,0,0,0"
+                             Padding="10, 0">
+                        <StackPanel>
+                            <!-- Enter Data for Scanner-->
+                            <TextBox Watermark="Enter data to scan" />
+                            <ListBox Items="{Binding MyItems}" SelectionMode="Single">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="Red" CornerRadius="4" Padding="4">
+                                            <TextBlock Text="{Binding}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
         </Grid>
     </Panel>
 </Window>

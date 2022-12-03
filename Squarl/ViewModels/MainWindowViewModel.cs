@@ -17,6 +17,21 @@ public class MainWindowViewModel : ViewModelBase
         new MemoryRecord() { address = "0010655C", value = "3", previousValue = "previous value", label = "label"},
         new MemoryRecord() { address = "0010755C", value = "4", previousValue = "previous value", label = "label"},
         new MemoryRecord() { address = "0010855C", value = "5", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "6", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "7", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "8", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "9", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "10", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "11", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "12", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "13", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "14", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "15", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "16", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "17", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "18", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "19", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010855C", value = "20", previousValue = "previous value", label = "label"},
     };
     
     public MainWindowViewModel()

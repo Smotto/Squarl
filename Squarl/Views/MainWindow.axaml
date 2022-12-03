@@ -77,26 +77,62 @@
                 
             </Panel>
 
-            <!-- Scan Results-->
+            
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,50,20,0">
-                <Label FontSize="20" Content="Scan Results"></Label>
+                <Label FontSize="12" Content="Scan Results"></Label>
                 <TreeDataGrid Source="{Binding Source}" />
             </StackPanel>
-
-            <!-- Manual Scanner Results-->
-            <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,50,0,0">
-                <Label FontSize="20" Content="Scanner"></Label>
-                <TextBox Watermark="Enter data to scan" />
-                <ListBox Items="{Binding MyItems}" SelectionMode="Single">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="Red" CornerRadius="4" Padding="4">
-                                <TextBlock Text="{Binding}" />
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
+            
+            
+            <!-- Scan Results-->
+            <TabControl Grid.Row="0" Grid.Column="1" Margin="20,50,0,0">
+                <TabItem Header="Manual Scan" 
+                         FontSize="12"
+                         MinHeight="0"
+                         Height="25"
+                         Margin="0,0,0,0"
+                         Padding="10, 0"
+                >
+                    <!-- Manual Scanner Results-->
+                    <StackPanel >
+                        <TextBox Watermark="Enter data to scan" />
+                        <ListBox Items="{Binding MyItems}" SelectionMode="Single">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="Red" CornerRadius="4" Padding="4">
+                                        <TextBlock Text="{Binding}" />
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Pointer Scan" 
+                         FontSize="12" 
+                         MinHeight="0"
+                         Height="25"
+                         Margin="0,0,0,0"
+                         Padding="10, 0"
+                >
+                    <!-- Manual Scanner Results-->
+                    <StackPanel >
+                        <TextBox Watermark="Enter data to scan" />
+                        <ListBox Items="{Binding MyItems}" SelectionMode="Single">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="Red" CornerRadius="4" Padding="4">
+                                        <TextBlock Text="{Binding}" />
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </TabItem>
+                
+                
+            </TabControl>
+            
+            
 
         </Grid>
     </Panel>

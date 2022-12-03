@@ -72,19 +72,17 @@
                 </Button>
             </StackPanel>
             
-            <Panel Grid.Row="0" Grid.Column="0">
-                
-                
-            </Panel>
-
-            
+            <!-- Scan Results -->
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,50,20,0">
                 <Label FontSize="12" Content="Scan Results"></Label>
-                <TreeDataGrid Source="{Binding Source}" />
+                <Panel Height="300">
+                    <TreeDataGrid Source="{Binding Source}" />
+                </Panel>
             </StackPanel>
             
+
             
-            <!-- Scan Results-->
+            <!-- Scan Options -->
             <TabControl Grid.Row="0" Grid.Column="1" Margin="20,50,0,0">
                 <TabItem Header="Manual Scan" 
                          FontSize="12"
@@ -93,7 +91,7 @@
                          Margin="0,0,0,0"
                          Padding="10, 0"
                 >
-                    <!-- Manual Scanner Results-->
+                    <!-- Manual Scanner -->
                     <StackPanel >
                         <TextBox Watermark="Enter data to scan" />
                         <ListBox Items="{Binding MyItems}" SelectionMode="Single">
@@ -114,7 +112,7 @@
                          Margin="0,0,0,0"
                          Padding="10, 0"
                 >
-                    <!-- Manual Scanner Results-->
+                    <!-- Pointer Scanner -->
                     <StackPanel >
                         <TextBox Watermark="Enter data to scan" />
                         <ListBox Items="{Binding MyItems}" SelectionMode="Single">
@@ -128,8 +126,6 @@
                         </ListBox>
                     </StackPanel>
                 </TabItem>
-                
-                
             </TabControl>
             
             

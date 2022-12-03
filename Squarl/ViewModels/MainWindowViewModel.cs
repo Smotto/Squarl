@@ -36,7 +36,7 @@ public class MainWindowViewModel : ViewModelBase
     
     public MainWindowViewModel()
     {
-        ShowDialog = new Interaction<SquarlViewModel, AlbumViewModel?>();
+        ShowDialog = new Interaction<SquarlViewModel, ProcessViewModel?>();
         
         OpenFolderCommand = ReactiveCommand.Create(async () =>
         {
@@ -58,6 +58,6 @@ public class MainWindowViewModel : ViewModelBase
         };
     }
     public ICommand OpenFolderCommand { get; }
-    public Interaction<SquarlViewModel, AlbumViewModel?> ShowDialog { get; }
+    public Interaction<SquarlViewModel, ProcessViewModel?> ShowDialog { get; }
     public FlatTreeDataGridSource<MemoryRecord> Source { get; }
 }

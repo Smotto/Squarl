@@ -8,9 +8,9 @@ using Squarl.ViewModels;
 
 namespace Squarl.Views;
 
-public partial class MusicStoreWindow : ReactiveWindow<SquarlViewModel>
+public partial class ProjectWindow : ReactiveWindow<SquarlViewModel>
 {
-    public MusicStoreWindow()
+    public ProjectWindow()
     {
         InitializeComponent();
         this.WhenActivated(d => d(ViewModel!.LoadProjectCommand.Subscribe(Close)));

@@ -1,6 +1,6 @@
 ﻿namespace Squarl.ViewModels;
 
-public class AlbumViewModel : ViewModelBase
+public class ProcessViewModel : ViewModelBase
 {
     
 }

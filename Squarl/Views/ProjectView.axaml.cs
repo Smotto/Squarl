@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Squarl.Views;
 
-public partial class MusicStoreView : UserControl
+public partial class ProjectView : UserControl
 {
-    public MusicStoreView()
+    public ProjectView()
     {
         InitializeComponent();
     }

@@ -8,7 +8,7 @@ public class SquarlViewModel : ViewModelBase
 {
     private bool _isBusy;
     private string? _searchText;
-    private AlbumViewModel? _selectedAlbum;
+    private ProcessViewModel? _selectedAlbum;
     
     public SquarlViewModel()
     {
@@ -17,15 +17,15 @@ public class SquarlViewModel : ViewModelBase
             return SelectedAlbum;
         });
         
-        SearchResults.Add(new AlbumViewModel());
-        SearchResults.Add(new AlbumViewModel());
-        SearchResults.Add(new AlbumViewModel());
+        SearchResults.Add(new ProcessViewModel());
+        SearchResults.Add(new ProcessViewModel());
+        SearchResults.Add(new ProcessViewModel());
     }
 
-    public ObservableCollection<AlbumViewModel> SearchResults { get; } = new();
-    public ReactiveCommand<Unit, AlbumViewModel?> LoadProjectCommand { get; }
+    public ObservableCollection<ProcessViewModel> SearchResults { get; } = new();
+    public ReactiveCommand<Unit, ProcessViewModel?> LoadProjectCommand { get; }
 
-    public AlbumViewModel? SelectedAlbum
+    public ProcessViewModel? SelectedAlbum
     {
         get => _selectedAlbum;
         set => this.RaiseAndSetIfChanged(ref _selectedAlbum, value);

@@ -14,12 +14,12 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.WhenActivated(d => d(ViewModel!.ShowDialog.RegisterHandler(DoShowDialogAsync)));
     }
     
-    private async Task DoShowDialogAsync(InteractionContext<SquarlViewModel, AlbumViewModel?> interaction)
+    private async Task DoShowDialogAsync(InteractionContext<SquarlViewModel, ProcessViewModel?> interaction)
     {
-        var dialog = new MusicStoreWindow();
+        var dialog = new ProjectWindow();
         dialog.DataContext = interaction.Input;
 
-        var result = await dialog.ShowDialog<AlbumViewModel?>(this);
+        var result = await dialog.ShowDialog<ProcessViewModel?>(this);
         interaction.SetOutput(result);
     }
 }

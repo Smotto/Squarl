@@ -28,7 +28,7 @@
 
         <!-- Main Window Grid -->
         <Grid RowDefinitions="*"
-              ColumnDefinitions="*, *"
+              ColumnDefinitions="*, 1, *"
               Margin="30,30,30,15"
               ShowGridLines="False">
             <!-- Main Window Grid Themes -->
@@ -39,6 +39,7 @@
                     <Setter Property="Background" Value="{DynamicResource MidGreyBlueBrush}"></Setter>
                 </Style>
             </Grid.Styles>
+            
 
             <StackPanel Grid.Column="0" Orientation="Vertical">
                 <!-- Top Menu Icons -->
@@ -81,7 +82,7 @@
                     </Border>
                     <Border ToolTip.Tip="Scans">
                         <Button>
-                            <Label Content="Scans" />
+                            <Image Source="/Assets/Images/scan.png"></Image>
                         </Button>
                     </Border>
                     <Border ToolTip.Tip="Debugger">
@@ -99,16 +100,25 @@
                     </Panel>
                 </StackPanel>
 
+                <ProgressBar ShowProgressText="True" Margin="0, 8, 0, 0"></ProgressBar>
+
                 <!-- Output Panel -->
                 <Panel Margin="0,16,0,0">
                     <Border CornerRadius="4" Background="{DynamicResource NiceBlueBrush}">
                         <Viewbox Height="300"></Viewbox>
                     </Border>
                 </Panel>
+                
             </StackPanel>
             
+            <!-- Middle Black Bar -->
+            <GridSplitter Grid.Column="1" 
+                          Margin="0,50,0,0" 
+                          Background="Black"
+                          ResizeDirection="Columns"/>
+            
             <!-- Scan Options -->
-            <StackPanel Grid.Column="1" Margin="20,50,0,0">
+            <StackPanel Grid.Column="2" Margin="20,50,0,0">
                 <!-- Manual Scanner -->
                 <TabControl >
                     <TabItem Header="Manual Scan"
@@ -117,16 +127,27 @@
                              Height="25"
                              Margin="0,0,0,0"
                              Padding="10, 0">
-                        <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Panel Margin="0,8,0,0">
+                                <SplitButton Content="Scan Integer"
+                                             Command="{Binding ExportCommand }"
+                                             CommandParameter="Integer">
+                                    <SplitButton.Flyout>
+                                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                            <MenuItem Header="Integer"
+                                                      Command="{Binding ExportCommand }"
+                                                      CommandParameter="Integer" />
+                                            <MenuItem Header="Float"
+                                                      Command="{Binding ExportCommand }"
+                                                      CommandParameter="Float" />
+                                        </MenuFlyout>
+                                    </SplitButton.Flyout>
+                                </SplitButton>
+                            </Panel>
                             
-                            <Border ToolTip.Tip="Start Scan">
-                                <Button>
-                                    <Image Source="/Assets/Images/scan.png"></Image>
-                                </Button>
-                            </Border>
                             
                             <!-- Enter Data for Scanner-->
-                            <TextBox Watermark="Enter data to scan" />
+                            <TextBox Watermark="Enter data to scan" Width="150" Height="20"/>
                             <ListBox Items="{Binding MyItems}" SelectionMode="Single">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>

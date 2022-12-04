@@ -75,11 +75,12 @@
                             <Image Source="/Assets/Images/attach.png"></Image>
                         </Button>
                     </Border>
-                    <Border ToolTip.Tip="Current Attached Process">
-                        <Button>
-                            <Label Content="Current Process" />
-                        </Button>
-                    </Border>
+                    <StackPanel>
+                        <ComboBox SelectedIndex="0" Height="" Margin="0,3,10,0">
+                            <!-- TODO: Binding Here For Available Processes -->
+                            <ComboBoxItem Content="{Binding}"></ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
                     <Border ToolTip.Tip="Scans">
                         <Button>
                             <Image Source="/Assets/Images/scan.png"></Image>
@@ -108,7 +109,6 @@
                         <Viewbox Height="300"></Viewbox>
                     </Border>
                 </Panel>
-                
             </StackPanel>
             
             <!-- Middle Black Bar -->
@@ -128,23 +128,13 @@
                              Margin="0,0,0,0"
                              Padding="10, 0">
                         <StackPanel Orientation="Horizontal">
-                            <Panel Margin="0,8,0,0">
-                                <SplitButton Content="Scan Integer"
-                                             Command="{Binding ExportCommand }"
-                                             CommandParameter="Integer">
-                                    <SplitButton.Flyout>
-                                        <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                                            <MenuItem Header="Integer"
-                                                      Command="{Binding ExportCommand }"
-                                                      CommandParameter="Integer" />
-                                            <MenuItem Header="Float"
-                                                      Command="{Binding ExportCommand }"
-                                                      CommandParameter="Float" />
-                                        </MenuFlyout>
-                                    </SplitButton.Flyout>
-                                </SplitButton>
-                            </Panel>
-                            
+                            <!-- Data Type -->
+                            <ComboBox SelectedIndex="0">
+                                <ComboBoxItem>Integer</ComboBoxItem>
+                                <ComboBoxItem>Float</ComboBoxItem>
+                                <ComboBoxItem>Double</ComboBoxItem>
+                                <ComboBoxItem>Byte</ComboBoxItem>
+                            </ComboBox>
                             
                             <!-- Enter Data for Scanner-->
                             <TextBox Watermark="Enter data to scan" Width="150" Height="20"/>

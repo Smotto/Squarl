@@ -5,7 +5,7 @@
         xmlns:views="clr-namespace:Squarl.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Squarl.Views.ProjectWindow"
-        Title="MusicStoreWindow"
+        Title="ProjectWindow"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True">
     <Panel>
@@ -20,7 +20,7 @@
         </ExperimentalAcrylicBorder>
 
         <Panel Margin="40">
-            <views:ProjectView />
+            <views:ProjectWindowView />
         </Panel>
     </Panel>
 </Window>

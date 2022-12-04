@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Squarl.Views.ProcessView">
+             x:Class="Squarl.Views.ProjectView">
     <ListBox Items="{Binding SearchResults}" SelectedItem="{Binding SelectedProject}" Background="Transparent" Margin="0 20">
         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
@@ -21,5 +21,4 @@
             </ItemsPanelTemplate>
         </ListBox.ItemsPanel>
     </ListBox>
-    
 </UserControl>

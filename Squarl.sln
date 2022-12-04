@@ -1,6 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squarl", "Squarl\Squarl.csproj", "{0E99DD1C-3BA0-4A7D-8C9F-57CA644C067F}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squarl", "Squarl\Squarl.csproj", "{0E99DD1C-3BA0-4A7D-8C9F-57CA644C067F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squarl.Engine", "Squarl.Engine\Squarl.Engine.csproj", "{F5B4A8EF-E23F-480B-878A-BCD5B977E89C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squarl.CLI", "Squarl.CLI\Squarl.CLI.csproj", "{77ED02C6-BA66-4344-BBA8-11C9204A12B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +19,19 @@ Global
 		{0E99DD1C-3BA0-4A7D-8C9F-57CA644C067F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E99DD1C-3BA0-4A7D-8C9F-57CA644C067F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E99DD1C-3BA0-4A7D-8C9F-57CA644C067F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B4A8EF-E23F-480B-878A-BCD5B977E89C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B4A8EF-E23F-480B-878A-BCD5B977E89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B4A8EF-E23F-480B-878A-BCD5B977E89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B4A8EF-E23F-480B-878A-BCD5B977E89C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77ED02C6-BA66-4344-BBA8-11C9204A12B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77ED02C6-BA66-4344-BBA8-11C9204A12B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77ED02C6-BA66-4344-BBA8-11C9204A12B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77ED02C6-BA66-4344-BBA8-11C9204A12B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {750FE781-C4B1-455C-B626-3AD184352B7F}
 	EndGlobalSection
 EndGlobal

@@ -8,7 +8,7 @@ using Squarl.ViewModels;
 
 namespace Squarl.Views;
 
-public partial class ProjectWindow : ReactiveWindow<SquarlViewModel>
+public partial class ProjectWindow : ReactiveWindow<ProjectWindowViewModel>
 {
     public ProjectWindow()
     {

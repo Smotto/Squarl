@@ -14,12 +14,12 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.WhenActivated(d => d(ViewModel!.ShowDialog.RegisterHandler(DoShowDialogAsync)));
     }
     
-    private async Task DoShowDialogAsync(InteractionContext<SquarlViewModel, ProcessViewModel?> interaction)
+    private async Task DoShowDialogAsync(InteractionContext<ProjectWindowViewModel, ProjectViewModel?> interaction)
     {
         var dialog = new ProjectWindow();
         dialog.DataContext = interaction.Input;
 
-        var result = await dialog.ShowDialog<ProcessViewModel?>(this);
+        var result = await dialog.ShowDialog<ProjectViewModel?>(this);
         interaction.SetOutput(result);
     }
 }

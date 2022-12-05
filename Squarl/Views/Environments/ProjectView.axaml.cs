@@ -2,11 +2,11 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Squarl.Views;
+namespace Squarl.Views.Environments;
 
-public partial class ProjectWindowView : UserControl
+public partial class ProjectView : UserControl
 {
-    public ProjectWindowView()
+    public ProjectView()
     {
         InitializeComponent();
     }

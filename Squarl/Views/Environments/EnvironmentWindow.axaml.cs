@@ -4,19 +4,19 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using System;
-using Squarl.ViewModels;
+using Squarl.ViewModels.Environments;
 
-namespace Squarl.Views;
+namespace Squarl.Views.Environments;
 
-public partial class ProjectWindow : ReactiveWindow<ProjectWindowViewModel>
+public partial class EnvironmentWindow : ReactiveWindow<EnvironmentViewModel>
 {
-    public ProjectWindow()
+    public EnvironmentWindow()
     {
         InitializeComponent();
-        this.WhenActivated(d => d(ViewModel!.LoadProjectCommand.Subscribe(Close)));
 #if DEBUG
         this.AttachDevTools();
 #endif
+        this.WhenActivated(d => d(ViewModel!.LoadProjectCommand.Subscribe(Close!)));
     }
 
     private void InitializeComponent()

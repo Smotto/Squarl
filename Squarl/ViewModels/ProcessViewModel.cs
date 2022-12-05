@@ -10,14 +10,9 @@ namespace Squarl.ViewModels;
 
 public class ProcessViewModel : ViewModelBase
 {
+    private Processes[] _runningProcesses;
     private Process? _process;
 
-    // Default Constructor
-    public ProcessViewModel()
-    {
-    }
-
-    // Constructor takes in a single process
     public ProcessViewModel(Process process)
     {
         _process = process;
@@ -29,41 +24,17 @@ public class ProcessViewModel : ViewModelBase
         private set => this.RaiseAndSetIfChanged(ref _process, value);
     }
 
+    public Processes[] Processes
+    {
+        get => _runningProcesses;
+        private set => this.RaiseAndSetIfChanged(ref _runningProcesses, value);
+    }
+
     public string Name => _process!.ProcessName;
     public nint Handle => _process!.Handle;
 
-    public async Task AttachToProcess()
+    public static async Task<Process[]> GrabAllRunningProcesses()
     {
-        
+        return await Task.Run(Process.GetProcesses);
     }
-
-    // private Processes _processes;
-    // private Process _selectedProcess;
-    //
-    // public ProcessViewModel()
-    // {
-    //     AttachToProcessCommand = ReactiveCommand.Create(() =>
-    //     {
-    //         return _selectedProcess;
-    //     });
-    // }
-    //
-    // public ObservableCollection<ProcessViewModel> SearchResults { get; } = new();
-    // public ReactiveCommand<Unit, Process?> AttachToProcessCommand { get;  }
-    //
-    // public Process[] getProcesses()
-    // {
-    //     return _processes.AllRunningProcesses;
-    // }
-    //
-    // public List<string> getProcessNames()
-    // {
-    //     List<string> processNames = new List<string>();
-    //     foreach (Process process in _processes.AllRunningProcesses)
-    //     {
-    //         processNames.Add(process.ProcessName);
-    //     }
-    //
-    //     return processNames;
-    // }
 }

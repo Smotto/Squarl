@@ -3,6 +3,7 @@
         xmlns:vm="using:Squarl.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Squarl.Views"
         mc:Ignorable="d" d:DesignWidth="1048" d:DesignHeight="645"
         x:Class="Squarl.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -26,153 +27,12 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
 
-        <!-- Main Window Grid -->
-        <Grid RowDefinitions="*"
-              ColumnDefinitions="*, 1, *"
-              Margin="30,30,30,15"
-              ShowGridLines="False">
-            <!-- Main Window Grid Themes -->
-            <Grid.Styles>
-                <!-- Scan Results Theme -->
-                <Style Selector="TreeDataGrid">
-                    <Setter Property="CornerRadius" Value="5"></Setter>
-                    <Setter Property="Background" Value="{DynamicResource MidGreyBlueBrush}"></Setter>
-                </Style>
-            </Grid.Styles>
-            
+        <!-- Panel for margins, view for content to be played around with by User. -->
+        <Panel Margin="30,30,30,15">
+            <views:MainView>
+                
+            </views:MainView>
+        </Panel>
 
-            <StackPanel Grid.Column="0" Orientation="Vertical">
-                <!-- Top Menu Icons -->
-                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                    <Border ToolTip.Tip="Projects">
-                        <Button Command="{Binding OpenFolderCommand}">
-                            <Image Source="/Assets/Images/folder.png"></Image>
-                        </Button>
-                    </Border>
-                    
-                    <Border ToolTip.Tip="Save">
-                        <Button>
-                            <Image Source="/Assets/Images/save.png"></Image>
-                        </Button>
-                    </Border>
-                    <Border ToolTip.Tip="Edit">
-                        <Button>
-                            <Image Source="/Assets/Images/edit.png"></Image>
-                        </Button>
-                    </Border>
-                    <Border ToolTip.Tip="Layout">
-                        <Button>
-                            <Image Source="/Assets/Images/layout.png"></Image>
-                        </Button>
-                    </Border>
-                    <Border ToolTip.Tip="Windows">
-                        <Button>
-                            <Label Content="Windows" />
-                        </Button>
-                    </Border>
-                    <Border ToolTip.Tip="Attach To Process">
-                        <Button>
-                            <Image Source="/Assets/Images/attach.png"></Image>
-                        </Button>
-                    </Border>
-                    <StackPanel>
-                        <ComboBox SelectedIndex="0" Height="" Margin="0,3,10,0">
-                            <!-- TODO: Binding Here For Available Processes -->
-                            <ComboBoxItem Content="{Binding}"></ComboBoxItem>
-                        </ComboBox>
-                    </StackPanel>
-                    <Border ToolTip.Tip="Scans">
-                        <Button>
-                            <Image Source="/Assets/Images/scan.png"></Image>
-                        </Button>
-                    </Border>
-                    <Border ToolTip.Tip="Debugger">
-                        <Button>
-                            <Image Source="/Assets/Images/debugger.png"></Image>
-                        </Button>
-                    </Border>
-                </StackPanel>
-
-                <!-- Scan Results -->
-                <StackPanel>
-                    <Label FontSize="12" Content="Scan Results"></Label>
-                    <Panel Height="200">
-                        <TreeDataGrid Source="{Binding Source}" />
-                    </Panel>
-                </StackPanel>
-
-                <ProgressBar ShowProgressText="True" Margin="0, 8, 0, 0"></ProgressBar>
-
-                <!-- Output Panel -->
-                <Panel Margin="0,16,0,0">
-                    <Border CornerRadius="4" Background="{DynamicResource NiceBlueBrush}">
-                        <Viewbox Height="300"></Viewbox>
-                    </Border>
-                </Panel>
-            </StackPanel>
-            
-            <!-- Middle Black Bar -->
-            <GridSplitter Grid.Column="1" 
-                          Margin="0,50,0,0" 
-                          Background="Black"
-                          ResizeDirection="Columns"/>
-            
-            <!-- Scan Options -->
-            <StackPanel Grid.Column="2" Margin="20,50,0,0">
-                <!-- Manual Scanner -->
-                <TabControl >
-                    <TabItem Header="Manual Scan"
-                             FontSize="12"
-                             MinHeight="0"
-                             Height="25"
-                             Margin="0,0,0,0"
-                             Padding="10, 0">
-                        <StackPanel Orientation="Horizontal">
-                            <!-- Data Type -->
-                            <ComboBox SelectedIndex="0">
-                                <ComboBoxItem>Integer</ComboBoxItem>
-                                <ComboBoxItem>Float</ComboBoxItem>
-                                <ComboBoxItem>Double</ComboBoxItem>
-                                <ComboBoxItem>Byte</ComboBoxItem>
-                            </ComboBox>
-                            
-                            <!-- Enter Data for Scanner-->
-                            <TextBox Watermark="Enter data to scan" Width="150" Height="20"/>
-                            <ListBox Items="{Binding MyItems}" SelectionMode="Single">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Background="Red" CornerRadius="4" Padding="4">
-                                            <TextBlock Text="{Binding}" />
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </StackPanel>
-                    </TabItem>
-                    
-                    <!-- Pointer Scanner -->
-                    <TabItem Header="Pointer Scan"
-                             FontSize="12"
-                             MinHeight="0"
-                             Height="25"
-                             Margin="0,0,0,0"
-                             Padding="10, 0">
-                        <StackPanel>
-                            <!-- Enter Data for Scanner-->
-                            <TextBox Watermark="Enter data to scan" />
-                            <ListBox Items="{Binding MyItems}" SelectionMode="Single">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Background="Red" CornerRadius="4" Padding="4">
-                                            <TextBlock Text="{Binding}" />
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </StackPanel>
-                    </TabItem>
-                </TabControl>
-            </StackPanel>
-        </Grid>
     </Panel>
 </Window>

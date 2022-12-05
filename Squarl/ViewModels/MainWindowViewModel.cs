@@ -1,10 +1,14 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using ReactiveUI;
+using Squarl.Engine;
 using Squarl.Models;
+using Squarl.ViewModels.Environments;
 
 namespace Squarl.ViewModels;
 
@@ -12,41 +16,27 @@ public class MainWindowViewModel : ViewModelBase
 {
     private ObservableCollection<MemoryRecord> _memoryRecords = new()
     {
-        new MemoryRecord() { address = "0010455C", value = "1", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010555C", value = "2", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010655C", value = "3", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010755C", value = "4", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "5", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "6", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "7", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "8", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "9", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "10", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "11", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "12", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "13", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "14", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "15", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "16", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "17", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "18", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "19", previousValue = "previous value", label = "label"},
-        new MemoryRecord() { address = "0010855C", value = "20", previousValue = "previous value", label = "label"},
+        new MemoryRecord() { address = "0010455C", value = "1", previousValue = "previous value", label = "label" },
     };
-    
+
     public MainWindowViewModel()
     {
-        ShowDialog = new Interaction<ProjectWindowViewModel, ProjectViewModel?>();
-        
+        ShowDialog = new Interaction<EnvironmentViewModel, ProjectViewModel?>();
+
         OpenFolderCommand = ReactiveCommand.Create(async () =>
         {
             // Code Here Executed When Button Is Clicked.
-            var store = new ProjectWindowViewModel();
+            var enviroment = new EnvironmentViewModel();
 
-            var result = await ShowDialog.Handle(store);
+            var result = await ShowDialog.Handle(enviroment);
         });
-        
-        Source = new FlatTreeDataGridSource<MemoryRecord>(_memoryRecords)
+
+        SelectProcessCommand = ReactiveCommand.Create(() =>
+        {
+            // TODO: Select a process from the current list of processes
+        });
+
+        MemorySource = new FlatTreeDataGridSource<MemoryRecord>(_memoryRecords)
         {
             Columns =
             {
@@ -57,7 +47,10 @@ public class MainWindowViewModel : ViewModelBase
             },
         };
     }
+
     public ICommand OpenFolderCommand { get; }
-    public Interaction<ProjectWindowViewModel, ProjectViewModel?> ShowDialog { get; }
-    public FlatTreeDataGridSource<MemoryRecord> Source { get; }
+    public ICommand SelectProcessCommand { get; }
+    public Interaction<EnvironmentViewModel, ProjectViewModel?> ShowDialog { get; }
+    public FlatTreeDataGridSource<MemoryRecord> MemorySource { get; }
+
 }

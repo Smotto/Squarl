@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Squarl.Views;
 
-public partial class ProjectView : UserControl
+public partial class MainView : UserControl
 {
-    public ProjectView()
+    public MainView()
     {
         InitializeComponent();
     }

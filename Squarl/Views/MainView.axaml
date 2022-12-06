@@ -2,14 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Squarl.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Squarl.Views.MainView">
+
+    <Design.DataContext>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+
     <DockPanel>
         <!-- Main Window Grid -->
         <Grid RowDefinitions="*"
               ColumnDefinitions="*, 1, *"
-              ShowGridLines="True"
-              >
+              ShowGridLines="False">
             <!-- Main Window Grid Themes -->
             <Grid.Styles>
                 <!-- Scan Results Theme -->
@@ -46,27 +51,30 @@
                     </Border>
                     <Border ToolTip.Tip="Windows">
                         <Button>
-                            <Label Content="Windows" />
+                            <Label Content="{Binding TestName}" />
                         </Button>
                     </Border>
                     <Border ToolTip.Tip="Attach To Process">
-                        <Button>
+                        <Button Command="{Binding AttachToProcessCommand}">
                             <Image Source="/Assets/Images/attach.png"></Image>
                         </Button>
                     </Border>
                     <StackPanel>
-                        <ComboBox x:Name="ProcessComboBox" SelectedIndex="0"
-                                  Height="" Margin="0,3,10,0">
-                            <!-- TODO: Binding Here For Available Processes -->
+                        <ComboBox x:Name="ProcessComboBox"
+                                  PlaceholderText="Select Process"
+                                  SelectedItem="{Binding CurrentProcess}"
+                                  Width="150"
+                                  Items="{Binding ProcessComboBoxSource.Items}"
+                                  Margin="0,3,10,0">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" FontFamily="{Binding}" />
+                                    <TextBlock Text="{Binding ProcessName}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                     </StackPanel>
                     <Border ToolTip.Tip="Scans">
-                        <Button>
+                        <Button Command="{Binding LoadRunningProcessesCommand}">
                             <Image Source="/Assets/Images/scan.png"></Image>
                         </Button>
                     </Border>
@@ -81,18 +89,19 @@
                 <StackPanel>
                     <Label FontSize="12" Content="Scan Results"></Label>
                     <Panel Height="200">
-                        <TreeDataGrid Source="{Binding Source}" />
+                        <TreeDataGrid Source="{Binding MemorySource}" />
                     </Panel>
                 </StackPanel>
 
+                <!-- Progress Bar -->
                 <ProgressBar ShowProgressText="True" Margin="0, 8, 0, 0"></ProgressBar>
 
                 <!-- Output Panel -->
-                <Panel Margin="0,16,0,0">
-                    <Border CornerRadius="4" Background="{DynamicResource NiceBlueBrush}">
-                        <Viewbox Height="300"></Viewbox>
-                    </Border>
-                </Panel>
+                <!-- <Panel Margin="0,16,0,0"> -->
+                <!--     <Border CornerRadius="4" Background="{DynamicResource NiceBlueBrush}"> -->
+                <!--         <Viewbox Height="300"></Viewbox> -->
+                <!--     </Border> -->
+                <!-- </Panel> -->
             </StackPanel>
 
             <!-- Middle Black Bar -->

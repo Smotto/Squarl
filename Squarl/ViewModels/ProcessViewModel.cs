@@ -1,40 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Reactive;
 using System.Threading.Tasks;
-using ReactiveUI;
 using Squarl.Engine;
+
 namespace Squarl.ViewModels;
 
 public class ProcessViewModel : ViewModelBase
 {
-    private Processes[] _runningProcesses;
-    private Process? _process;
+    private Process _currentProcess;
+    private ObservableCollection<Process>? _processes;
 
-    public ProcessViewModel(Process process)
+    public ProcessViewModel()
     {
-        _process = process;
+        _currentProcess = new();
+        _processes = new();
     }
+
+    public Process CurrentProcess => _currentProcess;
+    public ObservableCollection<Process>? Processes => _processes;
     
-    public Process? Process
+    public async Task LoadProcessesAsync()
     {
-        get => _process;
-        private set => this.RaiseAndSetIfChanged(ref _process, value);
-    }
-
-    public Processes[] Processes
-    {
-        get => _runningProcesses;
-        private set => this.RaiseAndSetIfChanged(ref _runningProcesses, value);
-    }
-
-    public string Name => _process!.ProcessName;
-    public nint Handle => _process!.Handle;
-
-    public static async Task<Process[]> GrabAllRunningProcesses()
-    {
-        return await Task.Run(Process.GetProcesses);
+        ProcessEngine processEngine = new ProcessEngine();
+        foreach (var process in (await processEngine.GrabAllRunningProcesses())!)
+        {
+            _processes?.Add(process);
+        }
     }
 }

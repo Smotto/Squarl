@@ -1,15 +1,13 @@
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using Squarl.Engine;
 using Squarl.ViewModels;
 using Squarl.ViewModels.Environments;
 using Squarl.Views.Environments;
 
 namespace Squarl.Views;
 
-public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
+public partial class MainWindow : ReactiveWindow<MainViewModel>
 {
     public MainWindow()
     {

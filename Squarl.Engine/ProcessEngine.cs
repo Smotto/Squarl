@@ -2,9 +2,11 @@
 
 namespace Squarl.Engine;
 
-public class Processes
+public class ProcessEngine
 {
-    public static async Task<Process[]> GrabAllRunningProcesses()
+    public ProcessEngine() { }
+    
+    public async Task<Process[]?> GrabAllRunningProcesses()
     {
         return await Task.Run(Process.GetProcesses);
     }

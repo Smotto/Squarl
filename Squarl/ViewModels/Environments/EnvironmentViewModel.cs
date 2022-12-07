@@ -9,6 +9,9 @@ public class EnvironmentViewModel : ViewModelBase
     private bool _isBusy;
     private string? _searchText;
     private ProjectViewModel? _selectedProject;
+    
+    public ReactiveCommand<Unit, ProjectViewModel?> LoadProjectCommand { get; }
+    public ObservableCollection<ProjectViewModel> SearchResults { get; } = new();
 
     public EnvironmentViewModel()
     {
@@ -17,9 +20,6 @@ public class EnvironmentViewModel : ViewModelBase
         SearchResults.Add(new ProjectViewModel());
         SearchResults.Add(new ProjectViewModel());
     }
-
-    public ReactiveCommand<Unit, ProjectViewModel?> LoadProjectCommand { get; }
-    public ObservableCollection<ProjectViewModel> SearchResults { get; } = new();
 
     public ProjectViewModel? SelectedProject
     {

@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Squarl.Engine;
 
@@ -7,24 +10,36 @@ namespace Squarl.ViewModels;
 
 public class ProcessViewModel : ViewModelBase
 {
-    private Process _currentProcess;
-    private ObservableCollection<Process>? _processes;
-
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public ProcessViewModel()
     {
-        _currentProcess = new();
-        _processes = new();
     }
 
-    public Process CurrentProcess => _currentProcess;
-    public ObservableCollection<Process>? Processes => _processes;
-    
+    /// <summary>
+    /// Getters and setters
+    /// </summary>
+    public IEnumerable<Process>? Processes { get; private set; }
+
+    /// <summary>
+    /// Loading All Running Processes on Machine into IEnumerable _processes
+    /// </summary>
     public async Task LoadProcessesAsync()
     {
-        ProcessEngine processEngine = new ProcessEngine();
-        foreach (var process in (await processEngine.GrabAllRunningProcesses())!)
+        Processes = await ProcessEngine.GrabAllRunningProcesses();
+    }
+
+    /// <summary>
+    /// Loads all relevant running processes that appear at the top of Windows Task Manager.
+    /// </summary>
+    public async Task LoadApplicationsAsync()
+    {
+        var processes = await ProcessEngine.GrabAllRunningProcesses();
+        await Task.Run(() =>
         {
-            _processes?.Add(process);
-        }
+            var processList = processes!.Where(process => process.MainWindowHandle != IntPtr.Zero).ToList();
+            Processes = processList;
+        });
     }
 }

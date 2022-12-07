@@ -83,51 +83,50 @@ namespace Memory.Win64
 {
     class MemoryHelper64
     {
-        Process process;
+        private Process _process;
  
-        public MemoryHelper64(Process TargetProcess)
+        public MemoryHelper64(Process targetProcess)
         {
-            process = TargetProcess;
+            _process = targetProcess;
         }
  
-        public ulong GetBaseAddress(ulong StartingAddress)
+        public ulong GetBaseAddress(ulong startingAddress)
         {
-            return (ulong)process.MainModule.BaseAddress.ToInt64() + StartingAddress;
+            return (ulong)_process.MainModule!.BaseAddress.ToInt64() + startingAddress;
         }
  
-        public byte[] ReadMemoryBytes(ulong MemoryAddress, int Bytes)
+        public byte[] ReadMemoryBytes(ulong memoryAddress, int bytes)
         {
-            byte[] data = new byte[Bytes];
-            ReadProcessMemory(process.Handle, MemoryAddress, data, data.Length, IntPtr.Zero);
+            byte[] data = new byte[bytes];
+            ReadProcessMemory(_process.Handle, memoryAddress, data, data.Length, IntPtr.Zero);
             return data;
         }
  
-        public T ReadMemory<T>(ulong MemoryAddress)
+        public T ReadMemory<T>(ulong memoryAddress)
         {
-            byte[] data = ReadMemoryBytes(MemoryAddress, Marshal.SizeOf(typeof(T)));
+            byte[] data = ReadMemoryBytes(memoryAddress, Marshal.SizeOf(typeof(T)));
  
             T t;
-            GCHandle PinnedStruct = GCHandle.Alloc(data, GCHandleType.Pinned);
-            try { t = (T)Marshal.PtrToStructure(PinnedStruct.AddrOfPinnedObject(), typeof(T)); }
-            catch (Exception ex) { throw ex; }
-            finally { PinnedStruct.Free(); }
+            GCHandle pinnedStruct = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try { t = (T)Marshal.PtrToStructure(pinnedStruct.AddrOfPinnedObject(), typeof(T))!; }
+            finally { pinnedStruct.Free(); }
  
             return t;
         }
  
-        public bool WriteMemory<T>(ulong MemoryAddress, T Value)
+        public bool WriteMemory<T>(ulong memoryAddress, T value)
         {
             IntPtr bw = IntPtr.Zero;
  
             int sz = ObjectType.GetSize<T>();
-            byte[] data = ObjectType.GetBytes<T>(Value);
-            bool result = WriteProcessMemory(process.Handle, MemoryAddress, data, sz, out bw);
+            byte[] data = ObjectType.GetBytes<T>(value);
+            bool result = WriteProcessMemory(_process.Handle, memoryAddress, data, sz, out bw);
             return result && bw != IntPtr.Zero;
         }
  
         public void Close()
         {
-            CloseHandle(process.Handle);
+            CloseHandle(_process.Handle);
         }
  
         #region PInvoke
@@ -158,22 +157,22 @@ namespace Memory.Utils
 {
     static class MemoryUtils
     {
-        public static uint OffsetCalculator(MemoryHelper32 TargetMemory, uint BaseAddress, int[] Offsets)
+        public static uint OffsetCalculator(MemoryHelper32 targetMemory, uint baseAddress, int[] offsets)
         {
-            var address = BaseAddress;
-            foreach (uint offset in Offsets)
+            var address = baseAddress;
+            foreach (uint offset in offsets)
             {
-                address = TargetMemory.ReadMemory<uint>(address) + offset;
+                address = targetMemory.ReadMemory<uint>(address) + offset;
             }
             return address;
         }
  
-        public static ulong OffsetCalculator(Win64.MemoryHelper64 TargetMemory, ulong BaseAddress, int[] Offsets)
+        public static ulong OffsetCalculator(Win64.MemoryHelper64 targetMemory, ulong baseAddress, int[] offsets)
         {
-            var address = BaseAddress;
-            foreach (uint offset in Offsets)
+            var address = baseAddress;
+            foreach (uint offset in offsets)
             {
-                address = TargetMemory.ReadMemory<ulong>(address) + offset;
+                address = targetMemory.ReadMemory<ulong>(address) + offset;
             }
             return address;
         }
@@ -186,24 +185,26 @@ namespace Memory.Utils
             return Marshal.SizeOf(typeof(T));
         }
  
-        public static byte[] GetBytes<T>(T Value)
+        public static byte[] GetBytes<T>(T value)
         {
             string typename = typeof(T).ToString();
             Console.WriteLine(typename);
             switch (typename)
             {
                 case "System.Single":
-                    return BitConverter.GetBytes((float)Convert.ChangeType(Value, typeof(float)));
+                    return BitConverter.GetBytes((float)Convert.ChangeType(value, typeof(float))!);
                 case "System.Int32":
-                    return BitConverter.GetBytes((int)Convert.ChangeType(Value, typeof(int)));
+                    return BitConverter.GetBytes((int)Convert.ChangeType(value, typeof(int))!);
                 case "System.Int64":
-                    return BitConverter.GetBytes((long)Convert.ChangeType(Value, typeof(long)));
+                    return BitConverter.GetBytes((long)Convert.ChangeType(value, typeof(long))!);
                 case "System.Double":
-                    return BitConverter.GetBytes((double)Convert.ChangeType(Value, typeof(double)));
+                    return BitConverter.GetBytes((double)Convert.ChangeType(value, typeof(double))!);
+                // case "System.Byte":
+                    // return BitConverter.GetBytes((byte)Convert.ChangeType(value, typeof(byte)));
                 case "System.String":
-                    return Encoding.Unicode.GetBytes((string)Convert.ChangeType(Value, typeof(string)));
+                    return Encoding.Unicode.GetBytes((string)Convert.ChangeType(value, typeof(string))!);
                 default:
-                    return new byte[0];
+                    return Array.Empty<byte>();
             }
         }
     }

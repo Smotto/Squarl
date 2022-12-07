@@ -1,46 +1,51 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Text;
+using static Squarl.Engine.Native;
+
+// ReSharper disable All
 
 namespace Squarl.Engine;
 
 public class ScanEngine
 {
-    [DllImport("kernel32.dll")]
-    static extern void GetSystemInfo(out SYSTEM_INFO lpSystemInfo);
-    
-    // Data Type
-    public struct SYSTEM_INFO
+    public static List<Module> CollectModules(Process process)
     {
-        public ushort processorArchitecture;
-        ushort reserved;
-        public uint pageSize;
-        public IntPtr minimumApplicationAddress;  // minimum address
-        public IntPtr maximumApplicationAddress;  // maximum address
-        public IntPtr activeProcessorMask;
-        public uint numberOfProcessors;
-        public uint processorType;
-        public uint allocationGranularity;
-        public ushort processorLevel;
-        public ushort processorRevision;
+        List<Module> collectedModules = new List<Module>();
+
+        IntPtr[] modulePointers = Array.Empty<nint>();
+
+        // Determine number of modules
+        if (!EnumProcessModulesEx(process.Handle, modulePointers, 0, out var bytesNeeded,
+                (uint)ModuleFilter.ListModulesAll))
+        {
+            return collectedModules;
+        }
+
+        var totalNumberOfModules = bytesNeeded / IntPtr.Size;
+        modulePointers = new IntPtr[totalNumberOfModules];
+
+        // Collect modules from the process
+        if (EnumProcessModulesEx(process.Handle, modulePointers, bytesNeeded, out bytesNeeded,
+                (uint)ModuleFilter.ListModulesAll))
+        {
+            for (int index = 0; index < totalNumberOfModules; index++)
+            {
+                StringBuilder moduleFilePath = new StringBuilder(1024);
+                GetModuleFileNameEx(process.Handle, modulePointers[index], moduleFilePath,
+                    (uint)(moduleFilePath.Capacity));
+
+                string moduleName = Path.GetFileName(moduleFilePath.ToString());
+                ModuleInformation moduleInformation = new ModuleInformation();
+                GetModuleInformation(process.Handle, modulePointers[index], out moduleInformation,
+                    (uint)(IntPtr.Size * (modulePointers.Length)));
+
+                // Convert to a normalized module and add it to our list
+                Module module = new Module(moduleName, moduleInformation.lpBaseOfDll,
+                    moduleInformation.SizeOfImage);
+                collectedModules.Add(module);
+            }
+        }
+
+        return collectedModules;
     }
-    
-    // VirtualQueryEx()
-    [DllImport("kernel32.dll", SetLastError=true)]
-    static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, 
-        out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
-    
-    public struct MEMORY_BASIC_INFORMATION
-    {
-        public int BaseAddress;
-        public int AllocationBase;
-        public int AllocationProtect;
-        public int RegionSize;   // size of the region allocated by the program
-        public int State;   // check if allocated (MEM_COMMIT)
-        public int Protect; // page protection (must be PAGE_READWRITE)
-        public int lType;
-    }
-    
-    [DllImport("kernel32.dll")]
-    public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-    
-    
 }

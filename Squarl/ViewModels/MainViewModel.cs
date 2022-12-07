@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
@@ -14,14 +14,20 @@ namespace Squarl.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private Process _currentProcess = new();
-    private ProcessViewModel _processViewModel = new();
-    private ObservableCollection<Process> _processes = new();
+    private Process _currentAttachedAttachProcess = null!;
+    private ObservableCollection<Process>? _processes;
     private ObservableCollection<MemoryRecord> _memoryRecords = new();
-    
-    public MainViewModel()
+
+    public MainViewModel(ProcessViewModel processViewModel)
     {
-        ProcessComboBoxSource = new ComboBox();
+        ShowDialog = new Interaction<EnvironmentViewModel, ProjectViewModel?>();
+
+        Task.Run(async () =>
+        {
+            await processViewModel.LoadApplicationsAsync();
+            Processes = new ObservableCollection<Process>(processViewModel.Processes!);
+        });
+
         MemorySource = new FlatTreeDataGridSource<MemoryRecord>(_memoryRecords)
         {
             Columns =
@@ -32,37 +38,50 @@ public class MainViewModel : ViewModelBase
                 new TextColumn<MemoryRecord, string>("Label", x => x.label),
             },
         };
-        ShowDialog = new Interaction<EnvironmentViewModel, ProjectViewModel?>();
+        
         OpenFolderCommand = ReactiveCommand.Create(async () =>
         {
             // Code Here Executed When Button Is Clicked.
             var enviroment = new EnvironmentViewModel();
             var result = await ShowDialog.Handle(enviroment);
         });
+        
         AttachToProcessCommand = ReactiveCommand.Create(async () =>
         {
-            Console.WriteLine(CurrentProcess);
+            await processViewModel.LoadApplicationsAsync();
+            Processes = new ObservableCollection<Process>(processViewModel.Processes!);
         });
-        // Loads all the running processes into the combo box.
-        LoadRunningProcessesCommand = ReactiveCommand.Create(async () =>
-        {
-            await _processViewModel.LoadProcessesAsync();
-            _processes = _processViewModel.Processes!;
-            ProcessComboBoxSource!.Items = _processes;
-        });
+        
+        LoadRunningProcessesCommand = ReactiveCommand.Create(async () => { });
+
+        ReloadRunningProcessesCommand = ReactiveCommand.Create(async () => { });
     }
+    
+    public bool IsChanged => CurrentAttachedProcess != _currentAttachedAttachProcess;
 
-    public bool IsChanged => CurrentProcess != _currentProcess;
-
-    public Process CurrentProcess
+    /// <summary>
+    /// Getter and setter for current attached process.
+    /// </summary>
+    public Process CurrentAttachedProcess
     {
-        get => _currentProcess; 
-        set => this.RaiseAndSetIfChanged(ref _currentProcess, value);
+        get => _currentAttachedAttachProcess;
+        set => this.RaiseAndSetIfChanged(ref _currentAttachedAttachProcess, value);
     }
+
+    /// <summary>
+    /// Getter and setter for process list.
+    /// </summary>
+    public ObservableCollection<Process> Processes
+    {
+        get => _processes!;
+        set => this.RaiseAndSetIfChanged(ref _processes, value);
+    }
+
     public ICommand OpenFolderCommand { get; }
     public ICommand AttachToProcessCommand { get; }
     public ICommand LoadRunningProcessesCommand { get; }
-    public Interaction<EnvironmentViewModel, ProjectViewModel?> ShowDialog { get; }
+    public ICommand ReloadRunningProcessesCommand { get; }
+    
     public FlatTreeDataGridSource<MemoryRecord> MemorySource { get; }
-    public ComboBox ProcessComboBoxSource { get; }
+    public Interaction<EnvironmentViewModel, ProjectViewModel?> ShowDialog { get; }
 }

@@ -27,7 +27,7 @@
 
             <StackPanel Grid.Column="0" Orientation="Vertical" DockPanel.Dock="Top">
                 <!-- Top Menu Icons -->
-                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" >
                     <Border ToolTip.Tip="Projects">
                         <Button Command="{Binding OpenFolderCommand}">
                             <Image Source="/Assets/Images/folder.png"></Image>
@@ -62,13 +62,14 @@
                     <StackPanel>
                         <ComboBox x:Name="ProcessComboBox"
                                   PlaceholderText="Select Process"
-                                  SelectedItem="{Binding CurrentProcess}"
+                                  SelectedItem="{Binding CurrentAttachedProcess}"
+                                  Tapped="ProcessComboBox_OnTapped"
                                   Width="150"
-                                  Items="{Binding ProcessComboBoxSource.Items}"
+                                  Items="{Binding Processes}"
                                   Margin="0,3,10,0">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ProcessName}" />
+                                    <TextBlock Text="{Binding ProcessName}"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

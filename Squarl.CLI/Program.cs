@@ -1,138 +1,100 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Text;
-using Memory.Utils;
 using Memory.Win64;
+using Squarl.Engine;
 
 namespace Squarl.CLI
 {
     internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Enter Process Name: ");
             string? processName = Console.ReadLine();
             Console.WriteLine("Getting Process...");
-            
+
             Process[] allRunningProcesses = Process.GetProcesses();
-            
+
             foreach (Process process in allRunningProcesses)
             {
                 Console.WriteLine("Process: {0} ID: {1}", process.ProcessName, process.Id);
-
             }
-            Console.WriteLine("Getting Process Complete.");
-            
+
+            Console.WriteLine("Getting Process Complete!\n");
+
             Process? p = Process.GetProcessesByName(processName).FirstOrDefault();
-            List<Module> collectedModules = CollectModules(p!);
-            
+            List<Module> collectedModules = ScanEngine.CollectModules(p!);
+            MemoryHelper64 helper64 = new MemoryHelper64(p!);
+            Console.WriteLine("Selected Process Base Address: " + helper64.GetBaseAddress(0) + "\n");
+
             foreach (var module in collectedModules)
             {
                 if (module.ModuleName.StartsWith(processName!))
                 {
-                    ulong baseAddress = ((ulong)module.BaseAddress);
-                    Console.WriteLine("Base Process Address: " + baseAddress);
-                    Console.WriteLine("Enter offset memory address: ");
-                    Console.WriteLine(UInt64.Parse("0x022ADEF8"));
-                    ulong offset = UInt64.Parse("0x022ADEF8");
-                    ulong finalAddress = baseAddress + offset;
-                    Console.WriteLine("Reading from base + offset address...");
-                    MemoryHelper64 helper = new MemoryHelper64(p!);
-                    Console.WriteLine("Read Result: " + helper.ReadMemory<int>(finalAddress));
-                    Console.WriteLine("Change value to: ");
-                    int value = Console.Read();
-                    Console.WriteLine(helper.WriteMemory(finalAddress, value));
+                    int byteSize = 2;
+                    byte[] bytes = helper64.ReadMemoryBytes((ulong)module.BaseAddress, byteSize);
+                    
+                    Console.WriteLine("Reading Memory Bytes Of Size: " + byteSize);
+                    foreach (var bite in bytes)
+                    {
+                        Console.WriteLine(bite);
+                    }
+                    Console.WriteLine(module.ModuleName);
+                    break;
                 }
             }
-            
         }
 
-        public static List<Module> CollectModules(Process process)
+        public static class VirtualQueryStuff
         {
-            List<Module> collectedModules = new List<Module>();
-
-            IntPtr[] modulePointers = new IntPtr[0];
-            int bytesNeeded = 0;
-            
-            // Determine number of modules
-            if (!Native.EnumProcessModulesEx(process.Handle, modulePointers, 0, out bytesNeeded,
-                    (uint)Native.ModuleFilter.ListModulesAll))
+            public struct MEMORY_BASIC_INFORMATION
             {
-                return collectedModules;
+                public IntPtr BaseAddress;
+                public IntPtr AllocationBase;
+                public AllocationProtectEnum AllocationProtect;
+                public IntPtr RegionSize;
+                public StateEnum State;
+                public AllocationProtectEnum Protect;
+                public TypeEnum Type;
             }
-            
-            int totalNumberofModules = bytesNeeded / IntPtr.Size;
-            modulePointers = new IntPtr[totalNumberofModules];
-
-            // Collect modules from the process
-            if (Native.EnumProcessModulesEx(process.Handle, modulePointers, bytesNeeded, out bytesNeeded,
-                    (uint)Native.ModuleFilter.ListModulesAll))
+            public enum AllocationProtectEnum : uint
             {
-                for (int index = 0; index < totalNumberofModules; index++)
-                {
-                    StringBuilder moduleFilePath = new StringBuilder(1024);
-                    Native.GetModuleFileNameEx(process.Handle, modulePointers[index], moduleFilePath,
-                        (uint)(moduleFilePath.Capacity));
-
-                    string moduleName = Path.GetFileName(moduleFilePath.ToString());
-                    Native.ModuleInformation moduleInformation = new Native.ModuleInformation();
-                    Native.GetModuleInformation(process.Handle, modulePointers[index], out moduleInformation,
-                        (uint)(IntPtr.Size * (modulePointers.Length)));
-
-                    // Convert to a normalized module and add it to our list
-                    Module module = new Module(moduleName, moduleInformation.lpBaseOfDll, moduleInformation.SizeOfImage);
-                    collectedModules.Add(module);
-                }
+                PAGE_EXECUTE = 0x00000010,
+                PAGE_EXECUTE_READ = 0x00000020,
+                PAGE_EXECUTE_READWRITE = 0x00000040,
+                PAGE_EXECUTE_WRITECOPY = 0x00000080,
+                PAGE_NOACCESS = 0x00000001,
+                PAGE_READONLY = 0x00000002,
+                PAGE_READWRITE = 0x00000004,
+                PAGE_WRITECOPY = 0x00000008,
+                PAGE_GUARD = 0x00000100,
+                PAGE_NOCACHE = 0x00000200,
+                PAGE_WRITECOMBINE = 0x00000400
             }
 
-            return collectedModules;
+            public enum StateEnum : uint
+            {
+                MEM_COMMIT = 0x1000,
+                MEM_FREE = 0x10000,
+                MEM_RESERVE = 0x2000
+            }
+
+            public enum TypeEnum : uint
+            {
+                MEM_IMAGE = 0x1000000,
+                MEM_MAPPED = 0x40000,
+                MEM_PRIVATE = 0x20000
+            }
+            
+            [DllImport("kernel32.dll")]
+            private static extern int VirtualQuery (
+                ref UIntPtr lpAddress,
+                ref MEMORY_BASIC_INFORMATION lpBuffer,
+                int dwLength
+            );
         }
-    }
-
-    public class Native
-    {
-        [StructLayout(LayoutKind.Sequential)]
-        public struct ModuleInformation
-        {
-            public IntPtr lpBaseOfDll;
-            public uint SizeOfImage;
-            public IntPtr EntryPoint;
-        }
-
-        internal enum ModuleFilter
-        {
-            ListModulesDefault = 0x0,
-            ListModules32Bit = 0x01,
-            ListModules64Bit = 0x02,
-            ListModulesAll = 0x03,
-        }
-
-        [DllImport("psapi.dll")]
-        public static extern bool EnumProcessModulesEx(IntPtr hProcess,
-            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4)] [In] [Out] IntPtr[] lphModule, int cb,
-            [MarshalAs(UnmanagedType.U4)] out int lpcbNeeded, uint dwFilterFlag);
-
-        [DllImport("psapi.dll")]
-        public static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpBaseName,
-            [In] [MarshalAs(UnmanagedType.U4)] uint nSize);
-
-        [DllImport("psapi.dll", SetLastError = true)]
-        public static extern bool GetModuleInformation(IntPtr hProcess, IntPtr hModule, out ModuleInformation lpmodinfo,
-            uint cb);
-    }
-
-    public class Module
-    {
-        public Module(string moduleName, IntPtr baseAddress, uint size)
-        {
-            this.ModuleName = moduleName;
-            this.BaseAddress = baseAddress;
-            this.Size = size;
-        }
-
-        public string ModuleName { get; set; }
-        public IntPtr BaseAddress { get; set; }
-        public uint Size { get; set; }
+        
+        
     }
 }

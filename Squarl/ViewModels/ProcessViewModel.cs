@@ -35,11 +35,6 @@ public class ProcessViewModel : ViewModelBase
     /// </summary>
     public async Task LoadApplicationsAsync()
     {
-        var processes = await ProcessEngine.GrabAllRunningProcesses();
-        await Task.Run(() =>
-        {
-            var processList = processes!.Where(process => process.MainWindowHandle != IntPtr.Zero).ToList();
-            Processes = processList;
-        });
+       Processes = await ProcessEngine.GrabAllRunningApplications();
     }
 }

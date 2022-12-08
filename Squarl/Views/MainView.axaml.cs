@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -25,8 +28,10 @@ public partial class MainView : UserControl
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var source = sender as ComboBox;
-            source!.Items = await ProcessEngine.GrabAllRunningApplications();
-            e.Handled = true;
+            IEnumerable<Process?> applications = (await ProcessEngine.GrabAllRunningApplications())!;
+            var enumerable = applications.ToList();
+            source!.Items = enumerable;
         });
+        e.Handled = true;
     }
 }

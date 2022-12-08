@@ -7,7 +7,7 @@
              x:Class="Squarl.Views.MainView">
 
     <Design.DataContext>
-        <viewModels:MainViewModel />
+        <viewModels:MainViewModel/>
     </Design.DataContext>
 
     <DockPanel>
@@ -23,7 +23,6 @@
                     <Setter Property="Background" Value="{DynamicResource MidGreyBlueBrush}"></Setter>
                 </Style>
             </Grid.Styles>
-
 
             <StackPanel Grid.Column="0" Orientation="Vertical" DockPanel.Dock="Top">
                 <!-- Top Menu Icons -->
@@ -49,15 +48,15 @@
                             <Image Source="/Assets/Images/layout.png"></Image>
                         </Button>
                     </Border>
-                    <Border ToolTip.Tip="Windows">
-                        <Button>
-                            <Label Content="{Binding TestName}" />
-                        </Button>
-                    </Border>
                     <Border ToolTip.Tip="Attach To Process">
                         <Button Command="{Binding AttachToProcessCommand}">
                             <Image Source="/Assets/Images/attach.png"></Image>
                         </Button>
+                    </Border>
+                    <Border ToolTip.Tip="Windows">
+                        <Image Width="32" Height="32" Stretch="Uniform" Margin="0,0,0,10"
+                               Source="{Binding CurrentAttachedProcessBitmap}">
+                        </Image>
                     </Border>
                     <StackPanel>
                         <ComboBox x:Name="ProcessComboBox"
@@ -66,7 +65,7 @@
                                   Tapped="ProcessComboBox_OnTapped"
                                   Width="150"
                                   Items="{Binding Processes}"
-                                  Margin="0,3,10,0">
+                                  Margin="10,3,10,0">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ProcessName}"/>

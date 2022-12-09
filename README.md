@@ -1,2 +1,2 @@
 # Squarl
-Multi-Platform Desktop Memory Manipulator
+Windows Desktop Memory Manipulator
